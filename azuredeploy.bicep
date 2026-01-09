@@ -13,13 +13,6 @@ param cosmosDatabaseName string = 'flowcydb'
 @description('Provisioned RU/s for the Cosmos DB database. Increase for larger deployments.')
 param cosmosDatabaseThroughput int = 400
 
-@description('Azure DevOps organization name that Flowcy will manage.')
-param devOpsOrgName string
-
-@secure()
-@description('Azure DevOps PAT Flowcy uses for both the Web API and daemon Container Apps.')
-param azureDevOpsPat string
-
 @minValue(0)
 @description('Minimum replica count for the Web API container app.')
 param webReplicaMin int = 1
@@ -140,10 +133,6 @@ resource webApp 'Microsoft.App/containerApps@2024-03-01' = {
           name: 'cosmos-conn'
           value: cosmosConnectionString
         }
-        {
-          name: 'devops-pat'
-          value: azureDevOpsPat
-        }
       ]
       registries: []
       activeRevisionsMode: 'Single'
@@ -167,10 +156,6 @@ resource webApp 'Microsoft.App/containerApps@2024-03-01' = {
               value: cosmosDatabaseName
             }
             {
-              name: 'AZURE_DEVOPS_ORGNAME'
-              value: devOpsOrgName
-            }
-            {
               name: 'AZURE_DEVOPS_USE_PAT'
               value: 'true'
             }
@@ -181,10 +166,6 @@ resource webApp 'Microsoft.App/containerApps@2024-03-01' = {
             {
               name: 'AZURE_DEVOPS_USE_SERVICE_PRINCIPAL'
               value: 'false'
-            }
-            {
-              name: 'AZURE_DEVOPS_PAT'
-              secretRef: 'devops-pat'
             }
           ]
         }
@@ -211,10 +192,6 @@ resource daemonApp 'Microsoft.App/containerApps@2024-03-01' = {
           name: 'cosmos-conn'
           value: cosmosConnectionString
         }
-        {
-          name: 'devops-pat'
-          value: azureDevOpsPat
-        }
       ]
       registries: []
       activeRevisionsMode: 'Single'
@@ -238,10 +215,6 @@ resource daemonApp 'Microsoft.App/containerApps@2024-03-01' = {
               value: cosmosDatabaseName
             }
             {
-              name: 'AZURE_DEVOPS_ORGNAME'
-              value: devOpsOrgName
-            }
-            {
               name: 'AZURE_DEVOPS_USE_PAT'
               value: 'true'
             }
@@ -252,10 +225,6 @@ resource daemonApp 'Microsoft.App/containerApps@2024-03-01' = {
             {
               name: 'AZURE_DEVOPS_USE_SERVICE_PRINCIPAL'
               value: 'false'
-            }
-            {
-              name: 'AZURE_DEVOPS_PAT'
-              secretRef: 'devops-pat'
             }
           ]
         }

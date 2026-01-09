@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.39.26.7824",
-      "templateHash": "12173070082634611960"
+      "templateHash": "1168465406107016267"
     }
   },
   "parameters": {
@@ -38,18 +38,6 @@
       "minValue": 400,
       "metadata": {
         "description": "Provisioned RU/s for the Cosmos DB database. Increase for larger deployments."
-      }
-    },
-    "devOpsOrgName": {
-      "type": "string",
-      "metadata": {
-        "description": "Azure DevOps organization name that Flowcy will manage."
-      }
-    },
-    "azureDevOpsPat": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Azure DevOps PAT Flowcy uses for both the Web API and daemon Container Apps."
       }
     },
     "webReplicaMin": {
@@ -219,10 +207,6 @@
             {
               "name": "cosmos-conn",
               "value": "[format('AccountEndpoint={0};AccountKey={1};', reference(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('cosmosAccountName')), '2023-04-15').documentEndpoint, listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('cosmosAccountName')), variables('cosmosApiVersion')).primaryMasterKey)]"
-            },
-            {
-              "name": "devops-pat",
-              "value": "[parameters('azureDevOpsPat')]"
             }
           ],
           "registries": [],
@@ -247,10 +231,6 @@
                   "value": "[parameters('cosmosDatabaseName')]"
                 },
                 {
-                  "name": "AZURE_DEVOPS_ORGNAME",
-                  "value": "[parameters('devOpsOrgName')]"
-                },
-                {
                   "name": "AZURE_DEVOPS_USE_PAT",
                   "value": "true"
                 },
@@ -261,10 +241,6 @@
                 {
                   "name": "AZURE_DEVOPS_USE_SERVICE_PRINCIPAL",
                   "value": "false"
-                },
-                {
-                  "name": "AZURE_DEVOPS_PAT",
-                  "secretRef": "devops-pat"
                 }
               ]
             }
@@ -293,10 +269,6 @@
             {
               "name": "cosmos-conn",
               "value": "[format('AccountEndpoint={0};AccountKey={1};', reference(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('cosmosAccountName')), '2023-04-15').documentEndpoint, listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('cosmosAccountName')), variables('cosmosApiVersion')).primaryMasterKey)]"
-            },
-            {
-              "name": "devops-pat",
-              "value": "[parameters('azureDevOpsPat')]"
             }
           ],
           "registries": [],
@@ -321,10 +293,6 @@
                   "value": "[parameters('cosmosDatabaseName')]"
                 },
                 {
-                  "name": "AZURE_DEVOPS_ORGNAME",
-                  "value": "[parameters('devOpsOrgName')]"
-                },
-                {
                   "name": "AZURE_DEVOPS_USE_PAT",
                   "value": "true"
                 },
@@ -335,10 +303,6 @@
                 {
                   "name": "AZURE_DEVOPS_USE_SERVICE_PRINCIPAL",
                   "value": "false"
-                },
-                {
-                  "name": "AZURE_DEVOPS_PAT",
-                  "secretRef": "devops-pat"
                 }
               ]
             }

@@ -16,8 +16,6 @@ Clicking the button pre-loads the `azuredeploy.json` template that provisions:
 |-----------|-------------|
 | `namePrefix` | Short prefix applied to workspace, Container Apps, and Log Analytics names. Stick to 3-12 lowercase letters or digits. |
 | `cosmosAccountName` | Globally unique Cosmos DB account name (lowercase letters and digits only). Defaults to `flowcy-cosmosdb`. |
-| `devOpsOrgName` | Azure DevOps organization Flowcy should manage. This value becomes `AZURE_DEVOPS_ORGNAME` in both containers. |
-| `azureDevOpsPat` | Secure Azure DevOps PAT shared by both Container Apps. |
 
 ### Optional Parameters
 
@@ -29,9 +27,8 @@ Clicking the button pre-loads the `azuredeploy.json` template that provisions:
 ### Post-Deployment Checklist
 
 1. Note the `webAppFqdn` output (public URL for the Web API).
-2. Grant the PAT sufficient rights (Project Collection Administrator or equivalent) in the target Azure DevOps org.
-3. If you need organization-specific PAT secrets, update each Container App to add `AZURE_DEVOPS_PAT__<ORG>` environment variables after deployment.
-4. Configure any additional Cosmos containers/collections if your workload requires more than the default database scaffold.
+2. Configure any additional Cosmos containers/collections if your workload requires more than the default database scaffold.
+3. Adjust Container App scale settings later if traffic patterns change.
 
 ### Working from Bicep
 
