@@ -1,6 +1,6 @@
 ## Flowcy One-Click Deployment
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMoimHossain%2Fstellaris%2Fmain%2Fsrc%2Fdeployment%2Fazuredeploy.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMoimHossain%2Fflowcy-backend%2Fmain%2Fazuredeploy.json)
 
 Clicking the button pre-loads the `azuredeploy.json` template that provisions:
 
