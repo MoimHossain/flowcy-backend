@@ -25,6 +25,7 @@ Clicking the button pre-loads the `azuredeploy.json` template that provisions:
 - `cosmosDatabaseName` / `cosmosDatabaseThroughput` – keep defaults unless you already have a populated database.
 - `webImage` / `daemonImage` – override if you publish custom images.
 - Replica counts, CPU, and memory knobs control Container Apps scale and sizing.
+- `webContainerCpu` / `daemonContainerCpu` – accept decimal values such as `0.5`; when deploying via CLI, pass them as quoted strings (the template converts them to numbers internally).
 
 
 ### Post-Deployment Checklist
@@ -33,3 +34,8 @@ Clicking the button pre-loads the `azuredeploy.json` template that provisions:
 2. Grant the PATs sufficient rights (Project Collection Administrator or equivalent) in the target Azure DevOps org.
 3. If you need organization-specific PAT secrets, update each Container App to add `AZURE_DEVOPS_PAT__<ORG>` environment variables after deployment.
 4. Configure any additional Cosmos containers/collections if your workload requires more than the default database scaffold.
+
+### Working from Bicep
+
+- `azuredeploy.bicep` is the source template. Run `bicep build azuredeploy.bicep --outfile azuredeploy.json` before committing so the button keeps pointing at the up-to-date JSON artifact.
+- To deploy from the CLI instead of the portal, use `az deployment group create --resource-group <rg> --template-file azuredeploy.bicep --parameters <key>=<value> ...`.
