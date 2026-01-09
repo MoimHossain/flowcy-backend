@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.39.26.7824",
-      "templateHash": "4368189678471159686"
+      "templateHash": "18418205921156624447"
     }
   },
   "parameters": {
@@ -26,7 +26,7 @@
     },
     "cosmosAccountName": {
       "type": "string",
-      "defaultValue": "[toLower(substring(replace(format('{0}{1}', parameters('namePrefix'), uniqueString(resourceGroup().id)), '-', ''), 0, 44))]",
+      "defaultValue": "flowcy-cosmosdb",
       "minLength": 3,
       "metadata": {
         "description": "Globally unique name for the Azure Cosmos DB account (lowercase letters and numbers only)."
@@ -34,7 +34,7 @@
     },
     "cosmosDatabaseName": {
       "type": "string",
-      "defaultValue": "stellaris",
+      "defaultValue": "flowcydb",
       "metadata": {
         "description": "Cosmos DB database id used by the Flowcy services."
       }
@@ -53,30 +53,10 @@
         "description": "Azure DevOps organization name that Flowcy will manage."
       }
     },
-    "webImage": {
-      "type": "string",
-      "defaultValue": "moimhossain/azdo-control-panel:v2",
-      "metadata": {
-        "description": "Container image for the Flowcy Web API."
-      }
-    },
-    "daemonImage": {
-      "type": "string",
-      "defaultValue": "moimhossain/azdo-control-panel-daemon:v2",
-      "metadata": {
-        "description": "Container image for the Flowcy daemon processor."
-      }
-    },
-    "webPatSecret": {
+    "azureDevOpsPat": {
       "type": "securestring",
       "metadata": {
-        "description": "Azure DevOps PAT that the Web API will use for elevated calls."
-      }
-    },
-    "daemonPatSecret": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Azure DevOps PAT that the daemon will use. Reuse the Web PAT if desired."
+        "description": "Azure DevOps PAT Flowcy uses for both the Web API and daemon Container Apps."
       }
     },
     "webReplicaMin": {
@@ -154,6 +134,8 @@
     "daemonContainerAppName": "[format('{0}-daemon', parameters('namePrefix'))]",
     "logAnalyticsApiVersion": "2022-10-01",
     "cosmosApiVersion": "2023-04-15",
+    "webImage": "moimhossain/azdo-control-panel:v2",
+    "daemonImage": "moimhossain/azdo-control-panel-daemon:v2",
     "webCpu": "[json(parameters('webContainerCpu'))]",
     "daemonCpu": "[json(parameters('daemonContainerCpu'))]"
   },
@@ -246,7 +228,7 @@
             },
             {
               "name": "devops-pat",
-              "value": "[parameters('webPatSecret')]"
+              "value": "[parameters('azureDevOpsPat')]"
             }
           ],
           "registries": [],
@@ -256,7 +238,7 @@
           "containers": [
             {
               "name": "web",
-              "image": "[parameters('webImage')]",
+              "image": "[variables('webImage')]",
               "resources": {
                 "cpu": "[variables('webCpu')]",
                 "memory": "[parameters('webContainerMemory')]"
@@ -319,8 +301,8 @@
               "value": "[format('AccountEndpoint={0};AccountKey={1};', reference(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('cosmosAccountName')), '2023-04-15').documentEndpoint, listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('cosmosAccountName')), variables('cosmosApiVersion')).primaryMasterKey)]"
             },
             {
-              "name": "daemon-devops-pat",
-              "value": "[parameters('daemonPatSecret')]"
+              "name": "devops-pat",
+              "value": "[parameters('azureDevOpsPat')]"
             }
           ],
           "registries": [],
@@ -330,7 +312,7 @@
           "containers": [
             {
               "name": "daemon",
-              "image": "[parameters('daemonImage')]",
+              "image": "[variables('daemonImage')]",
               "resources": {
                 "cpu": "[variables('daemonCpu')]",
                 "memory": "[parameters('daemonContainerMemory')]"
@@ -362,7 +344,7 @@
                 },
                 {
                   "name": "AZURE_DEVOPS_PAT",
-                  "secretRef": "daemon-devops-pat"
+                  "secretRef": "devops-pat"
                 }
               ]
             }

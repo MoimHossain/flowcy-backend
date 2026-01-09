@@ -7,10 +7,10 @@ param namePrefix string = 'flowcy'
 
 @minLength(3)
 @description('Globally unique name for the Azure Cosmos DB account (lowercase letters and numbers only).')
-param cosmosAccountName string = toLower(substring(replace('${namePrefix}${uniqueString(resourceGroup().id)}', '-', ''), 0, 44))
+param cosmosAccountName string = 'flowcy-cosmosdb'
 
 @description('Cosmos DB database id used by the Flowcy services.')
-param cosmosDatabaseName string = 'stellaris'
+param cosmosDatabaseName string = 'flowcydb'
 
 @minValue(400)
 @description('Provisioned RU/s for the Cosmos DB database. Increase for larger deployments.')
@@ -19,19 +19,9 @@ param cosmosDatabaseThroughput int = 400
 @description('Azure DevOps organization name that Flowcy will manage.')
 param devOpsOrgName string
 
-@description('Container image for the Flowcy Web API.')
-param webImage string = 'moimhossain/azdo-control-panel:v2'
-
-@description('Container image for the Flowcy daemon processor.')
-param daemonImage string = 'moimhossain/azdo-control-panel-daemon:v2'
-
 @secure()
-@description('Azure DevOps PAT that the Web API will use for elevated calls.')
-param webPatSecret string
-
-@secure()
-@description('Azure DevOps PAT that the daemon will use. Reuse the Web PAT if desired.')
-param daemonPatSecret string
+@description('Azure DevOps PAT Flowcy uses for both the Web API and daemon Container Apps.')
+param azureDevOpsPat string
 
 @minValue(0)
 @description('Minimum replica count for the Web API container app.')
@@ -70,6 +60,8 @@ var webContainerAppName = '${namePrefix}-api'
 var daemonContainerAppName = '${namePrefix}-daemon'
 var logAnalyticsApiVersion = '2022-10-01'
 var cosmosApiVersion = '2023-04-15'
+var webImage = 'moimhossain/azdo-control-panel:v2'
+var daemonImage = 'moimhossain/azdo-control-panel-daemon:v2'
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: logAnalyticsWorkspaceName
@@ -152,7 +144,7 @@ resource webApp 'Microsoft.App/containerApps@2024-03-01' = {
         }
         {
           name: 'devops-pat'
-          value: webPatSecret
+          value: azureDevOpsPat
         }
       ]
       registries: []
@@ -222,8 +214,8 @@ resource daemonApp 'Microsoft.App/containerApps@2024-03-01' = {
           value: cosmosConnectionString
         }
         {
-          name: 'daemon-devops-pat'
-          value: daemonPatSecret
+          name: 'devops-pat'
+          value: azureDevOpsPat
         }
       ]
       registries: []
@@ -265,7 +257,7 @@ resource daemonApp 'Microsoft.App/containerApps@2024-03-01' = {
             }
             {
               name: 'AZURE_DEVOPS_PAT'
-              secretRef: 'daemon-devops-pat'
+              secretRef: 'devops-pat'
             }
           ]
         }

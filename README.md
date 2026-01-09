@@ -15,15 +15,13 @@ Clicking the button pre-loads the `azuredeploy.json` template that provisions:
 | Parameter | Description |
 |-----------|-------------|
 | `namePrefix` | Short prefix applied to workspace, Container Apps, and Log Analytics names. Stick to 3-12 lowercase letters or digits. |
-| `cosmosAccountName` | Globally unique Cosmos DB account name (lowercase letters and digits only). Defaults to a generated string if left unchanged. |
+| `cosmosAccountName` | Globally unique Cosmos DB account name (lowercase letters and digits only). Defaults to `flowcy-cosmosdb`. |
 | `devOpsOrgName` | Azure DevOps organization Flowcy should manage. This value becomes `AZURE_DEVOPS_ORGNAME` in both containers. |
-| `webPatSecret` | Secure PAT the Web API uses for elevated Azure DevOps operations. |
-| `daemonPatSecret` | Secure PAT for the daemon. Reuse the same value as the Web PAT if you do not need separation. |
+| `azureDevOpsPat` | Secure Azure DevOps PAT shared by both Container Apps. |
 
 ### Optional Parameters
 
 - `cosmosDatabaseName` / `cosmosDatabaseThroughput` – keep defaults unless you already have a populated database.
-- `webImage` / `daemonImage` – override if you publish custom images.
 - Replica counts, CPU, and memory knobs control Container Apps scale and sizing.
 - `webContainerCpu` / `daemonContainerCpu` – accept decimal values such as `0.5`; when deploying via CLI, pass them as quoted strings (the template converts them to numbers internally).
 
@@ -31,7 +29,7 @@ Clicking the button pre-loads the `azuredeploy.json` template that provisions:
 ### Post-Deployment Checklist
 
 1. Note the `webAppFqdn` output (public URL for the Web API).
-2. Grant the PATs sufficient rights (Project Collection Administrator or equivalent) in the target Azure DevOps org.
+2. Grant the PAT sufficient rights (Project Collection Administrator or equivalent) in the target Azure DevOps org.
 3. If you need organization-specific PAT secrets, update each Container App to add `AZURE_DEVOPS_PAT__<ORG>` environment variables after deployment.
 4. Configure any additional Cosmos containers/collections if your workload requires more than the default database scaffold.
 
