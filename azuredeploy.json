@@ -230,7 +230,7 @@
           "ingress": {
             "external": true,
             "transport": "auto",
-            "targetPort": [parameters('webContainerPort')]
+            "targetPort": "[parameters('webContainerPort')]"
           },
           "secrets": [
             {
@@ -251,7 +251,7 @@
               "name": "web",
               "image": "[parameters('webImage')]",
               "resources": {
-                "cpu": [parameters('webContainerCpu')],
+                "cpu": "[parameters('webContainerCpu')]",
                 "memory": "[parameters('webContainerMemory')]"
               },
               "env": [
@@ -287,8 +287,8 @@
             }
           ],
           "scale": {
-            "minReplicas": [parameters('webReplicaMin')],
-            "maxReplicas": [parameters('webReplicaMax')]
+            "minReplicas": "[parameters('webReplicaMin')]",
+            "maxReplicas": "[parameters('webReplicaMax')]"
           }
         }
       }
@@ -324,7 +324,7 @@
               "name": "daemon",
               "image": "[parameters('daemonImage')]",
               "resources": {
-                "cpu": [parameters('daemonContainerCpu')],
+                "cpu": "[parameters('daemonContainerCpu')]",
                 "memory": "[parameters('daemonContainerMemory')]"
               },
               "env": [
@@ -360,8 +360,8 @@
             }
           ],
           "scale": {
-            "minReplicas": [parameters('daemonReplicaMin')],
-            "maxReplicas": [parameters('daemonReplicaMax')]
+            "minReplicas": "[parameters('daemonReplicaMin')]",
+            "maxReplicas": "[parameters('daemonReplicaMax')]"
           }
         }
       }
