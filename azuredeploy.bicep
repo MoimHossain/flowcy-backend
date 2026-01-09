@@ -1,6 +1,3 @@
-@description('Azure region for all resources. Defaults to the resource group location when not specified.')
-param location string = resourceGroup().location
-
 @minLength(3)
 @description('Prefix used for resource names (letters, numbers, and hyphens).')
 param namePrefix string = 'flowcy'
@@ -54,6 +51,7 @@ param daemonContainerMemory string = '1Gi'
 @description('Port exposed by the Web API container for HTTP ingress.')
 param webContainerPort int = 8080
 
+var location = resourceGroup().location
 var logAnalyticsWorkspaceName = '${namePrefix}-law'
 var containerAppsEnvironmentName = '${namePrefix}-cae'
 var webContainerAppName = '${namePrefix}-api'

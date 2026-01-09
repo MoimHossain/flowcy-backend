@@ -5,17 +5,10 @@
     "_generator": {
       "name": "bicep",
       "version": "0.39.26.7824",
-      "templateHash": "18418205921156624447"
+      "templateHash": "12173070082634611960"
     }
   },
   "parameters": {
-    "location": {
-      "type": "string",
-      "defaultValue": "[resourceGroup().location]",
-      "metadata": {
-        "description": "Azure region for all resources. Defaults to the resource group location when not specified."
-      }
-    },
     "namePrefix": {
       "type": "string",
       "defaultValue": "flowcy",
@@ -128,6 +121,7 @@
     }
   },
   "variables": {
+    "location": "[resourceGroup().location]",
     "logAnalyticsWorkspaceName": "[format('{0}-law', parameters('namePrefix'))]",
     "containerAppsEnvironmentName": "[format('{0}-cae', parameters('namePrefix'))]",
     "webContainerAppName": "[format('{0}-api', parameters('namePrefix'))]",
@@ -144,7 +138,7 @@
       "type": "Microsoft.OperationalInsights/workspaces",
       "apiVersion": "2022-10-01",
       "name": "[variables('logAnalyticsWorkspaceName')]",
-      "location": "[parameters('location')]",
+      "location": "[variables('location')]",
       "properties": {
         "sku": {
           "name": "PerGB2018"
@@ -156,7 +150,7 @@
       "type": "Microsoft.App/managedEnvironments",
       "apiVersion": "2024-03-01",
       "name": "[variables('containerAppsEnvironmentName')]",
-      "location": "[parameters('location')]",
+      "location": "[variables('location')]",
       "properties": {
         "appLogsConfiguration": {
           "destination": "log-analytics",
@@ -174,13 +168,13 @@
       "type": "Microsoft.DocumentDB/databaseAccounts",
       "apiVersion": "2023-04-15",
       "name": "[parameters('cosmosAccountName')]",
-      "location": "[parameters('location')]",
+      "location": "[variables('location')]",
       "kind": "GlobalDocumentDB",
       "properties": {
         "databaseAccountOfferType": "Standard",
         "locations": [
           {
-            "locationName": "[parameters('location')]",
+            "locationName": "[variables('location')]",
             "failoverPriority": 0,
             "isZoneRedundant": false
           }
@@ -212,7 +206,7 @@
       "type": "Microsoft.App/containerApps",
       "apiVersion": "2024-03-01",
       "name": "[variables('webContainerAppName')]",
-      "location": "[parameters('location')]",
+      "location": "[variables('location')]",
       "properties": {
         "managedEnvironmentId": "[resourceId('Microsoft.App/managedEnvironments', variables('containerAppsEnvironmentName'))]",
         "configuration": {
@@ -291,7 +285,7 @@
       "type": "Microsoft.App/containerApps",
       "apiVersion": "2024-03-01",
       "name": "[variables('daemonContainerAppName')]",
-      "location": "[parameters('location')]",
+      "location": "[variables('location')]",
       "properties": {
         "managedEnvironmentId": "[resourceId('Microsoft.App/managedEnvironments', variables('containerAppsEnvironmentName'))]",
         "configuration": {
