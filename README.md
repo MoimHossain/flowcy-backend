@@ -24,7 +24,7 @@ Clicking the button pre-loads the `azuredeploy.json` template that provisions:
 - `webContainerCpu` / `daemonContainerCpu` – accept decimal values such as `0.5`; when deploying via CLI, pass them as quoted strings (the template converts them to numbers internally).
 
 
-### Post-Deployment Checklist
+### Post-Deployment Checklist 
 
 1. Note the `webAppFqdn` output (public URL for the Web API).
 2. Configure any additional Cosmos containers/collections if your workload requires more than the default database scaffold.
