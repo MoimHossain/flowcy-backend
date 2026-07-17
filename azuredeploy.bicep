@@ -51,8 +51,8 @@ var webContainerAppName = '${namePrefix}-api'
 var daemonContainerAppName = '${namePrefix}-daemon'
 var logAnalyticsApiVersion = '2022-10-01'
 var cosmosApiVersion = '2023-04-15'
-var webImage = 'moimhossain/azdo-control-panel:v2'
-var daemonImage = 'moimhossain/azdo-control-panel-daemon:v2'
+var webImage = 'cloudoven/flowcy-azdo-api:1.0.0'
+var daemonImage = 'cloudoven/flowcy-azdo-daemon:1.0.0'
 
 resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: logAnalyticsWorkspaceName
