@@ -116,8 +116,8 @@
     "daemonContainerAppName": "[format('{0}-daemon', parameters('namePrefix'))]",
     "logAnalyticsApiVersion": "2022-10-01",
     "cosmosApiVersion": "2023-04-15",
-    "webImage": "moimhossain/azdo-control-panel:v2",
-    "daemonImage": "moimhossain/azdo-control-panel-daemon:v2",
+    "webImage": "cloudoven/flowcy-azdo-api:1.0.0",
+    "daemonImage": "cloudoven/flowcy-azdo-daemon:1.0.0",
     "webCpu": "[json(parameters('webContainerCpu'))]",
     "daemonCpu": "[json(parameters('daemonContainerCpu'))]"
   },
